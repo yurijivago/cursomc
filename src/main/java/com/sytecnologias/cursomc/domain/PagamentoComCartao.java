@@ -1,7 +1,5 @@
 package com.sytecnologias.cursomc.domain;
 
-import java.util.Date;
-
 import javax.persistence.Entity;
 
 import com.sytecnologias.cursomc.domain.enums.EstadoPagamento;
