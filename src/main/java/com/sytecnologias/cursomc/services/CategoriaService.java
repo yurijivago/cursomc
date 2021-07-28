@@ -3,10 +3,12 @@ package com.sytecnologias.cursomc.services;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.sytecnologias.cursomc.domain.Categoria;
 import com.sytecnologias.cursomc.repositories.CategoriaRepository;
+import com.sytecnologias.cursomc.services.exceptions.DataIntegrityException;
 import com.sytecnologias.cursomc.services.exceptions.ObjectNotFoundException;
 
 @Service
@@ -35,5 +37,15 @@ public class CategoriaService {
 	public Categoria update(Categoria obj) {
 		find(obj.getId());
 		return repo.save(obj);
+	}
+	
+	public void delete(Integer id) {
+		find(id);//caso o id não exista já será disparada uma exception apropriada
+		try {
+			repo.deleteById(id);
+		} catch (DataIntegrityViolationException e) {
+			throw new DataIntegrityException("Não é possível excluir uma cateroria que possui produtos");
+		}
+		
 	}
 }
